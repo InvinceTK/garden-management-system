@@ -159,51 +159,35 @@ const GardenPage = () => {
         </div>
 
         {/* AI Tools Section with Scroll Animation */}
-        <div ref={toolsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 section-fade-in">
-          {[
-            {
-              href: "/weed-detection",
-              title: "Weed Detection",
-              description: "Keep your garden healthy by identifying and managing unwanted weeds with our AI-powered detection system",
-              icon: ShieldCheck
-            },
-            {
-              href: "/plant-disease",
-              title: "Plant Health Monitor",
-              description: "Monitor your plants' health and get early disease detection with advanced AI analysis",
-              icon: Leaf
-            }
-          ].map((tool, index) => (
-            <a key={index} href={tool.href} className="block">
-              <Card className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all h-full hover-scale">
-                <CardContent className="p-6">
-                  <div className="aspect-video bg-zinc-800 rounded-lg overflow-hidden mb-4">
-                    <img 
-                      src="/api/placeholder/800/400" 
-                      alt={tool.title} 
-                      className="w-full h-full object-cover opacity-80 transition-opacity hover:opacity-100"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center">
-                    <tool.icon className="w-5 h-5 mr-2" />
-                    {tool.title}
-                  </h3>
-                  <p className="text-zinc-400">
-                    {tool.description}
-                  </p>
-                  <Button 
-                    className="mt-4 bg-green-600 hover:bg-green-500 text-black font-semibold hover-lift animate-pulse-glow"
-                  >
-                    Try {tool.title}
-                  </Button>
-                </CardContent>
-              </Card>
-            </a>
-          ))}
+<div ref={toolsRef} className="grid grid-cols-1 gap-6 section-fade-in">
+  <a href="/weed-detection" className="block">
+    <Card className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all h-full hover-scale">
+      <CardContent className="p-6">
+        <div className="aspect-video bg-zinc-800 rounded-lg overflow-hidden mb-4">
+          <img 
+            src="/api/placeholder/800/400"
+            alt="Weed Detection"
+            className="w-full h-full object-cover opacity-80 transition-opacity hover:opacity-100"
+          />
         </div>
-      </div>
-    </div>
-  );
+        <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center">
+          <ShieldCheck className="w-5 h-5 mr-2" />
+          Weed Detection
+        </h3>
+        <p className="text-zinc-400">
+          Keep your garden healthy by identifying and managing unwanted weeds with our AI-powered detection system
+        </p>
+        <Button 
+          className="mt-4 bg-green-600 hover:bg-green-500 text-black font-semibold hover-lift animate-pulse-glow"
+        >
+          Try Weed Detection
+        </Button>
+      </CardContent>
+    </Card>
+  </a>
+</div>
+</div>
+</div>
+);
 };
-
 export default GardenPage;

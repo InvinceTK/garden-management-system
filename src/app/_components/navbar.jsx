@@ -39,7 +39,7 @@ const Navbar = () => {
           >
             <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-green-400" />
             <span className="text-lg sm:text-2xl font-bold text-green-400">
-              OpenGarden
+              FloraFlow
             </span>
           </a>
 
