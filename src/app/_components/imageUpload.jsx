@@ -40,12 +40,12 @@ const WeedDetectionCard = () => {
       formData.append("image", selectedImage.file);
 
       const result = await processImage(formData);
-
+      console.log(result.processedImage)
       if (!result.success) {
         throw new Error(result.error);
       }
 
-      setProcessedImage(result.image);
+      setProcessedImage(result.processedImage);
     } catch (err) {
       console.error(err);
       setError("Failed to process image. Please try again.");

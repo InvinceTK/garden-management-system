@@ -9,7 +9,7 @@ def main():
     weed_detector = GreenOnBrown()
     
     # Read the image
-    frame = cv2.imread('images/image.png')
+    frame = cv2.imread('images/image.jpg')
     if frame is None:
         print("Error: Could not read image")
         return
