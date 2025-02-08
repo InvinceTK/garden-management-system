@@ -215,9 +215,6 @@ const GardenPage = () => {
 
         {/* Garden Planner with Scroll Animation */}
         <div id="planner" ref={plannerRef} className="scroll-mt-16 section-fade-in">
-          <h2 className="text-2xl font-bold text-green-400 mb-6 text-center">
-            Garden Planner
-          </h2>
           <div className="flex justify-center mb-12">
             <div className="w-full max-w-[800px] bg-zinc-900 p-6 rounded-lg border border-green-500/20 hover-scale">
               <GardenPlanner />
