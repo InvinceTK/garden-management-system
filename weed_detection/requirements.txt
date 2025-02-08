@@ -1,0 +1,4 @@
+openweedlocator-tools[desktop]
+opencv-python
+numpy
+matplotlib
