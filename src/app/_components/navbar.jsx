@@ -38,8 +38,9 @@ const Navbar = () => {
               hover:text-green-400 transition-colors"
           >
             <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-green-400" />
-            <span className="text-lg sm:text-2xl font-bold text-green-400">
-              FloraFlow
+            <span className="text-xl sm:text-2xl font-bold">
+              <span className="text-white">Flora</span>
+              <span className="text-green-400">Flow</span>
             </span>
           </a>
 
