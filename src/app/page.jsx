@@ -1,81 +1,205 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Leaf, ShieldCheck, Sprout } from 'lucide-react';
 import GardenPlanner from './GardenPlanner';
 import Navbar from './_components/navbar';
+import './animations.css';
 
 const GardenPage = () => {
-  return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 mt-16">
-        {/* Instructions Card - More compact on mobile */}
-        <Card className="mb-4 sm:mb-8 bg-green-50 border-green-200">
-          <CardContent className="p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-green-800 mb-3 sm:mb-4">
-              How to Use the Garden Planner
-            </h2>
-            <div className="space-y-1.5 sm:space-y-2 text-sm sm:text-base text-green-700">
-              <p>1. Drag and drop plants from the selection onto the grid</p>
-              <p>2. Click "Group Plants" to create plant groupings by clicking and dragging</p>
-              <p>3. Use "Remove Groups" to delete groupings by clicking on them</p>
-              <p>4. Click the X on any plant to remove it from the grid</p>
-              <p>5. Hover over plants to see detailed information</p>
-            </div>
-          </CardContent>
-        </Card>
+  // Intersection Observer for scroll animations
+  const observeElement = (element) => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
 
-        {/* Centered Garden Planner - Adjusts size based on screen */}
-        <div className="flex justify-center mb-6 sm:mb-12">
-          <div className="w-full max-w-[800px]">
-            <GardenPlanner />
+    observer.observe(element);
+    return () => observer.disconnect();
+  };
+
+  // Ref for scroll animations
+  const featuresRef = useRef(null);
+  const guideRef = useRef(null);
+  const plannerRef = useRef(null);
+  const toolsRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize scroll animations
+    const elements = [featuresRef, guideRef, plannerRef, toolsRef];
+    elements.forEach(ref => {
+      if (ref.current) {
+        observeElement(ref.current);
+      }
+    });
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black">
+      <Navbar />
+      
+      {/* Hero Section with Animation */}
+      <div className="bg-gradient-to-b from-black to-zinc-900 py-12 md:py-20 border-b border-green-500/20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
+              Smart Garden Planning Made Simple
+            </h1>
+            <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
+              Design your perfect garden with AI-powered tools and expert guidance
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 animate-slide-up stagger-delay-2">
+              <Button 
+                className="bg-green-600 hover:bg-green-500 text-black font-semibold px-6 py-2 hover-lift animate-pulse-glow"
+                onClick={() => document.getElementById('planner').scrollIntoView({ behavior: 'smooth' })}
+              >
+                Start Planning
+              </Button>
+              <Button 
+                variant="outline" 
+                className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
+              >
+                Watch Tutorial
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-12">
+        {/* Feature Cards with Scroll Animation */}
+        <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 section-fade-in">
+          {[
+            {
+              icon: Sprout,
+              title: "Drag & Drop Planning",
+              description: "Easily design your garden layout with intuitive drag and drop tools"
+            },
+            {
+              icon: ShieldCheck,
+              title: "AI-Powered Protection",
+              description: "Detect and prevent plant diseases and weeds with advanced AI"
+            },
+            {
+              icon: Leaf,
+              title: "Smart Recommendations",
+              description: "Get personalized plant grouping and care recommendations"
+            }
+          ].map((feature, index) => (
+            <Card key={index} className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all hover-scale">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
+                  <feature.icon className="w-6 h-6 text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-green-400 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-zinc-400">
+                  {feature.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Quick Start Guide with Scroll Animation */}
+        <div ref={guideRef} className="section-fade-in">
+          <Card className="mb-8 bg-gradient-to-r from-zinc-900 to-zinc-800 border-green-500/20 hover-scale">
+            <CardContent className="p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center mr-3 text-green-400 animate-pulse-glow">
+                  ?
+                </span>
+                Quick Start Guide
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: "Design Your Layout",
+                    description: "Drag and drop plants onto the grid to create your garden layout"
+                  },
+                  {
+                    title: "Group Plants",
+                    description: "Create plant groupings by clicking and dragging selections"
+                  },
+                  {
+                    title: "Fine-tune",
+                    description: "Adjust your design and get AI-powered recommendations"
+                  }
+                ].map((step, index) => (
+                  <div key={index} className="flex items-start hover-lift">
+                    <div className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center mr-3 text-green-400 font-semibold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-green-400 mb-1">{step.title}</h3>
+                      <p className="text-zinc-400">{step.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Garden Planner with Scroll Animation */}
+        <div id="planner" ref={plannerRef} className="scroll-mt-16 section-fade-in">
+          <h2 className="text-2xl font-bold text-green-400 mb-6 text-center">
+            Garden Planner
+          </h2>
+          <div className="flex justify-center mb-12">
+            <div className="w-full max-w-[800px] bg-zinc-900 p-6 rounded-lg border border-green-500/20 hover-scale">
+              <GardenPlanner />
+            </div>
           </div>
         </div>
 
-        {/* AI Features Cards - Stack on mobile, grid on larger screens */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mt-6 sm:mt-12">
-          {/* Plant Disease Detection Card
-          
-          <a href="/plant-disease" className="block">
-            <Card className="bg-white border-green-200 hover:shadow-lg transition-shadow h-full">
-              <CardContent className="p-4 sm:p-6">
-                <div className="aspect-video bg-green-100 rounded-lg overflow-hidden mb-3 sm:mb-4">
-                  <img 
-                    src="/api/placeholder/800/400" 
-                    alt="Plant Disease Detection" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-green-800 mb-2">
-                  Plant Disease Detection
-                </h3>
-                <p className="text-sm sm:text-base text-green-700">
-                  Upload photos of your plants to detect and diagnose diseases using AI
-                </p>
-              </CardContent>
-            </Card>
-          </a> */}
-
-          {/* Weed Detection Card */}
-          <a href="/weed-detection" className="block">
-            <Card className="bg-white border-green-200 hover:shadow-lg transition-shadow h-full">
-              <CardContent className="p-4 sm:p-6">
-                <div className="aspect-video bg-green-100 rounded-lg overflow-hidden mb-3 sm:mb-4">
-                  <img 
-                    src="/api/placeholder/800/400" 
-                    alt="Weed Detection" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-green-800 mb-2">
-                  Weed Detection
-                </h3>
-                <p className="text-sm sm:text-base text-green-700">
-                  Identify unwanted weeds in your garden with AI-powered detection
-                </p>
-              </CardContent>
-            </Card>
-          </a>
+        {/* AI Tools Section with Scroll Animation */}
+        <div ref={toolsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 section-fade-in">
+          {[
+            {
+              href: "/weed-detection",
+              title: "Weed Detection",
+              description: "Keep your garden healthy by identifying and managing unwanted weeds with our AI-powered detection system",
+              icon: ShieldCheck
+            },
+            {
+              href: "/plant-disease",
+              title: "Plant Health Monitor",
+              description: "Monitor your plants' health and get early disease detection with advanced AI analysis",
+              icon: Leaf
+            }
+          ].map((tool, index) => (
+            <a key={index} href={tool.href} className="block">
+              <Card className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all h-full hover-scale">
+                <CardContent className="p-6">
+                  <div className="aspect-video bg-zinc-800 rounded-lg overflow-hidden mb-4">
+                    <img 
+                      src="/api/placeholder/800/400" 
+                      alt={tool.title} 
+                      className="w-full h-full object-cover opacity-80 transition-opacity hover:opacity-100"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center">
+                    <tool.icon className="w-5 h-5 mr-2" />
+                    {tool.title}
+                  </h3>
+                  <p className="text-zinc-400">
+                    {tool.description}
+                  </p>
+                  <Button 
+                    className="mt-4 bg-green-600 hover:bg-green-500 text-black font-semibold hover-lift animate-pulse-glow"
+                  >
+                    Try {tool.title}
+                  </Button>
+                </CardContent>
+              </Card>
+            </a>
+          ))}
         </div>
       </div>
     </div>
