@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Leaf, ShieldCheck, Sprout } from 'lucide-react';
@@ -42,11 +43,24 @@ const GardenPage = () => {
     <div className="min-h-screen bg-black">
       <Navbar />
       
-      {/* Hero Section with Animation */}
-      <div className="bg-gradient-to-b from-black to-zinc-900 py-12 md:py-20 border-b border-green-500/20">
+      <div className="relative">
+      {/* Background Image */}
+  <Image
+    src="/g.jpg"
+    alt="Garden background"
+    fill
+    priority
+    className="object-cover opacity-40 z-0"  
+    sizes="100vw"  
+    quality={100}  
+  />
+      
+     
+      {/* Content */}
+      <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
+            <h1 className="py-10 text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
               Smart Garden Planning Made Simple
             </h1>
             <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
@@ -69,7 +83,9 @@ const GardenPage = () => {
           </div>
         </div>
       </div>
+    </div>
 
+   
       <div className="container mx-auto px-4 py-12">
         {/* Feature Cards with Scroll Animation */}
         <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 section-fade-in">
@@ -105,6 +121,57 @@ const GardenPage = () => {
             </Card>
           ))}
         </div>
+         {/* Right side - Content */}
+          
+         <div className="bg-black min-h-screen flex items-center">
+  <div className="container mx-auto px-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      {/* Left side - Content */}
+      <div className="p-4 text-left">
+        <h1 className="text-3xl md:text-5xl font-bold mb-6 text-green-400">
+          Smart Garden Management
+        </h1>
+        <p className="text-lg md:text-xl text-zinc-300 mb-8 leading-relaxed">
+          Keep your garden healthy with AI-powered weed detection and smart notifications. 
+          Get real-time alerts and personalized recommendations for your garden's needs.
+        </p>
+        
+        {/* Feature List */}
+        <ul className="space-y-4">
+          {[
+            'AI-powered weed detection',
+            'Real-time alert notifications',
+            'Personalized care recommendations'
+          ].map((feature, index) => (
+            <li 
+              key={index}
+              className="flex items-center text-zinc-400 text-lg"
+            >
+              <span className="w-2 h-2 bg-green-400 rounded-full mr-3" />
+              {feature}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Right side - Phone Images */}
+      <div className="relative h-[600px] flex items-center justify-center">
+        {/* Second Phone */}
+        <div className="absolute transform rotate-12 -translate-x-8">
+          <Image 
+            src="/ip.png"
+            alt="App Interface"
+            width={560}
+            height={1120}
+            className="rounded-3xl shadow-2xl"
+            priority
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         {/* Quick Start Guide with Scroll Animation */}
         <div ref={guideRef} className="section-fade-in">
@@ -112,7 +179,7 @@ const GardenPage = () => {
             <CardContent className="p-6 md:p-8">
               <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
                 <span className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center mr-3 text-green-400 animate-pulse-glow">
-                  ?
+                💡
                 </span>
                 Quick Start Guide
               </h2>
