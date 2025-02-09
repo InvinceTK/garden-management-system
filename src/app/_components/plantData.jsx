@@ -1,0 +1,55 @@
+const plantData = {
+    lavender: {
+      name: "Lavender",
+      species: "Lavandula angustifolia",
+      soil_type: "Well-draining",
+      ph_level: 6.7,
+      health_status: "Healthy",
+      image: "/lav.png",
+      companions: ["roses", "sage", "thyme"],
+      antagonists: ["humid_plants"],
+    },
+    roses: {
+      name: "Roses",
+      species: "Rosa hybrid",
+      soil_type: "Rich loamy",
+      ph_level: 6.5,
+      health_status: "Healthy",
+      image: "/rose.png",
+      companions: ["lavender", "garlic", "marigold"],
+      antagonists: ["boxwood"],
+    },
+    hydrangea: {
+      name: "Hydrangea",
+      species: "Hydrangea macrophylla",
+      soil_type: "Rich organic",
+      ph_level: 5.5,
+      health_status: "Healthy",
+      image: "/hy.png",
+      companions: ["ferns", "hostas"],
+      antagonists: ["succulents"],
+    },
+    sage: {
+      name: "Sage",
+      species: "Salvia officinalis",
+      soil_type: "Sandy",
+      ph_level: 6.5,
+      health_status: "Healthy",
+      image: "/sage.png",
+      companions: ["rosemary", "thyme", "lavender"],
+      antagonists: ["cucumbers"],
+    },
+    hostas: {
+      name: "Hostas",
+      species: "Hosta sieboldiana",
+      soil_type: "Rich organic",
+      ph_level: 6.5,
+      health_status: "Healthy",
+      image: "/hos.png",
+      companions: ["ferns", "astilbe", "hydrangea"],
+      antagonists: ["sun_plants"],
+    },
+  };
+  
+  export default plantData;
+  
