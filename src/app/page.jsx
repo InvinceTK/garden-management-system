@@ -1,5 +1,5 @@
 "use client";
-import GeminiChatbot from "./_components/chatbot";
+
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
