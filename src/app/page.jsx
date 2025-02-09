@@ -10,6 +10,7 @@ import Navbar from './_components/navbar';
 import './animations.css';
 import ImageUpload from './_components/imageUpload';
 import dynamic from 'next/dynamic';
+import ChatWidget from './_components/chatWidget';
 
 // Dynamic import of BasicScene
 const BasicScene = dynamic(() => import('./_components/BasicScene'), {
@@ -251,11 +252,7 @@ const GardenPage = () => {
           </Card>
         </div>
         <div className="container mx-auto p-4">
-      <GeminiChatbot
-        assistantName="Support Bot"
-        initialPrompt="You are a plant management system guide and give the answers in properly spaced format."
-        placeholder="How can I help you today?"
-      />
+        <ChatWidget />
     </div>
       </div>
     </div>

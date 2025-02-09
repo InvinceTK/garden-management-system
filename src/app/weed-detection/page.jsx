@@ -8,6 +8,7 @@ import {
 import { Selfview } from '@pexip/media-components'
 import { config } from '../../lib/video-config'
 import { processImage } from '../actions/processImage'
+import { Camera } from 'lucide-react'
 
 let vpaas
 
@@ -94,18 +95,15 @@ export default function Meeting() {
     }
   }
 
-  useEffect(() => {
+  const handleCapture = () => {
     const videoElement = document.querySelector('video')
     if (videoElement) {
-      const intervalId = setInterval(() => {
-        const frame = captureFrame(videoElement)
-        if (frame) {
-          processFrame(frame)
-        }
-      }, 15000)
-      return () => clearInterval(intervalId)
+      const frame = captureFrame(videoElement)
+      if (frame) {
+        processFrame(frame)
+      }
     }
-  }, [localStream, meetingId])
+  }
 
   const selfie = useMemo(() => (
     <Selfview
@@ -121,12 +119,18 @@ export default function Meeting() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
       <h1 className="text-2xl font-semibold mb-4">Weed Detection</h1>
       <div className="w-full max-w-4xl bg-gray-800 border border-gray-700 shadow-lg p-4 rounded-lg">
-        {localStream && selfie}
-        {isProcessing && (
-          <div className="mt-4 text-center text-yellow-400">
-            Processing image...
-          </div>
-        )}
+        <div className="relative">
+          {localStream && selfie}
+          <button
+            onClick={handleCapture}
+            disabled={isProcessing}
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed px-4 py-2 rounded-full flex items-center gap-2 transition-colors"
+          >
+            <Camera className="w-5 h-5" />
+            {isProcessing ? 'Processing...' : 'Take Snapshot'}
+          </button>
+        </div>
+        
         {error && (
           <div className="mt-4 text-center text-red-400">
             Error: {error}
