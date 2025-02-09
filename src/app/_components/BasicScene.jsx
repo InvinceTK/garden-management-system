@@ -96,11 +96,134 @@ function InteractiveGarden() {
       const createFlower = () => {
         switch(type) {
           case 'sunflower':
-            const centerGeo = new THREE.SphereGeometry(0.3, 16, 16);
-            const centerMat = new THREE.MeshPhongMaterial({ color: 0x654321 });
-            const center = new THREE.Mesh(centerGeo, centerMat);
-            center.position.y = -1;
-            group.add(center);
+    // Create center disk with seed pattern
+    const centerRadius = 0.25;
+    const centerGeo = new THREE.SphereGeometry(centerRadius, 32, 32);
+    const centerMat = new THREE.MeshPhongMaterial({ 
+        color: 0x4A2F1B,  // Darker brown for center
+        shininess: 5,
+        flatShading: true
+    });
+    const center = new THREE.Mesh(centerGeo, centerMat);
+    
+    // Create seed pattern on the center disk
+    const seedCount = 100;
+    const seedGeometry = new THREE.SphereGeometry(0.02, 8, 8);
+    const seedMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0x1A0F06,  // Very dark brown for seeds
+        shininess: 2
+    });
+
+    // Create Fibonacci spiral pattern for seeds
+    const goldenRatio = (1 + Math.sqrt(5)) / 2;
+    for (let i = 0; i < seedCount; i++) {
+        const seed = new THREE.Mesh(seedGeometry, seedMaterial);
+        
+        // Use golden ratio to calculate seed positions
+        const theta = i * 2 * Math.PI / goldenRatio;
+        const r = centerRadius * Math.sqrt(i / seedCount);
+        
+        // Position seeds on the sphere surface
+        seed.position.x = r * Math.cos(theta);
+        seed.position.z = r * Math.sin(theta);
+        seed.position.y = Math.sqrt(Math.max(0, centerRadius * centerRadius - r * r)) * (Math.random() > 0.5 ? 1 : -1);
+        
+        // Rotate seeds to face outward
+        seed.lookAt(seed.position.clone().multiplyScalar(2));
+        center.add(seed);
+    }
+
+    // Position center
+    center.position.y = 0;
+    group.add(center);
+
+    // Create more natural looking petals
+    const petalRows = 2;  // Two rows of petals for fullness
+    const petalsPerRow = 34;  // More petals for fuller appearance
+    
+    for (let row = 0; row < petalRows; row++) {
+        for (let i = 0; i < petalsPerRow; i++) {
+            // Create petal geometry with more natural shape
+            const petalLength = 0.5 + Math.random() * 0.1;  // Varying petal lengths
+            const petalWidth = 0.12 + Math.random() * 0.04;  // Varying petal widths
+            
+            // Custom petal shape using custom geometry
+            const petalShape = new THREE.Shape();
+            petalShape.moveTo(0, 0);
+            petalShape.quadraticCurveTo(petalWidth/2, petalLength/2, 0, petalLength);
+            petalShape.quadraticCurveTo(-petalWidth/2, petalLength/2, 0, 0);
+            
+            const petalGeometry = new THREE.ExtrudeGeometry(petalShape, {
+                steps: 1,
+                depth: 0.02,
+                bevelEnabled: false
+            });
+
+            // Create gradient-like effect for petals
+            const petalMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xFFD700,  // Base yellow
+                emissive: 0x331900,  // Slight orange glow
+                shininess: 20,
+                specular: 0x111111
+            });
+            
+            const petal = new THREE.Mesh(petalGeometry, petalMaterial);
+            
+            // Position and rotate petal
+            const angle = (i / petalsPerRow) * Math.PI * 2;
+            const rowRadius = 0.3 + row * 0.1;  // Offset each row slightly
+            
+            petal.position.set(
+                Math.cos(angle) * rowRadius,
+                -0.3,  // Match center disk height
+                Math.sin(angle) * rowRadius
+            );
+            
+            // Rotate petal to face outward
+            petal.rotation.y = -angle;
+            petal.rotation.x = Math.PI / 2 + (Math.random() - 0.5) * 0.2;  // Slight random variation
+            petal.rotation.z = (Math.random() - 0.5) * 0.1;  // Slight twist
+            
+            group.add(petal);
+        }
+    }
+    
+    // Add small leaves near the center
+    const leafCount = 3;
+    for (let i = 0; i < leafCount; i++) {
+        const leafGeometry = new THREE.Shape();
+        leafGeometry.moveTo(0, 0);
+        leafGeometry.quadraticCurveTo(0.1, 0.1, 0.2, 0);
+        leafGeometry.quadraticCurveTo(0.1, -0.1, 0, 0);
+        
+        const leafExtrudeSettings = {
+            steps: 1,
+            depth: 0.02,
+            bevelEnabled: false
+        };
+        
+        const leafMesh = new THREE.ExtrudeGeometry(leafGeometry, leafExtrudeSettings);
+        const leafMaterial = new THREE.MeshPhongMaterial({
+            color: 0x228B22,
+            shininess: 10
+        });
+        
+        const leaf = new THREE.Mesh(leafMesh, leafMaterial);
+        
+        // Position leaves around stem
+        const leafAngle = (i / leafCount) * Math.PI * 2;
+        leaf.position.set(
+            Math.cos(leafAngle) * 0.1,
+            -1.9 + i * 0.1,
+            Math.sin(leafAngle) * 0.1
+        );
+        
+        leaf.rotation.y = -leafAngle;
+        leaf.rotation.x = Math.PI / 4;
+        
+        group.add(leaf);
+    }
+    
 
             for (let i = 0; i < 24; i++) {
               const petalGeo = new THREE.ConeGeometry(0.15, 0.4, 4);
@@ -109,7 +232,7 @@ function InteractiveGarden() {
                 shininess: 50
               });
               const petal = new THREE.Mesh(petalGeo, petalMat);
-              petal.position.y = -1;
+              petal.position.y = 0;
               petal.rotation.z = Math.PI / 2;
               petal.rotation.y = (i / 24) * Math.PI * 2;
               petal.position.x = Math.cos((i / 24) * Math.PI * 2) * 0.4;
