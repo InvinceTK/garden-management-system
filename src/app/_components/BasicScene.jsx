@@ -3,15 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
-import { Info, Maximize2 } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 function InteractiveGarden() {
   const mountRef = useRef(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [showTutorial, setShowTutorial] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -428,21 +426,9 @@ function InteractiveGarden() {
     };
   }, []);
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
-
   return (
-    <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'w-full h-[600px]'}`}>
+    <div className="relative w-full h-[600px]">
       <div ref={mountRef} className="w-full h-full" />
-      
-      <button
-        onClick={toggleFullscreen}
-        className="absolute top-4 right-4 p-2 bg-white/90 rounded-full hover:bg-white/100 transition-colors"
-        title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-      >
-        <Maximize2 className="w-5 h-5 text-gray-700" />
-      </button>
       
       {showTutorial && (
         <Card className="absolute top-4 left-4 w-64 bg-white/90">

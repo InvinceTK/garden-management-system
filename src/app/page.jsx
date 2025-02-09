@@ -98,8 +98,13 @@ const GardenPage = () => {
                 <Button
                   variant="outline"
                   className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
+                  onClick={() =>
+                    document
+                     .getElementById("static-weed-detection")
+                     .scrollIntoView({ behavior: "smooth" })
+                  }
                 >
-                  Watch Tutorial
+                  Manage Garden
                 </Button>
               </div>
             </div>

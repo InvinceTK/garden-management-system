@@ -16,7 +16,7 @@ const Navbar = () => {
   const links = [
     { href: '/', text: 'Home', icon: Leaf },
     { href: '/#planner', text: 'Garden Planner', icon: Leaf },
-    { href: '/weed-detection', text: 'Weed Detection', icon: Camera },
+    { href: '/weed-detection', text: 'Live Weed Detection', icon: Camera },
   ];
 
   return (
