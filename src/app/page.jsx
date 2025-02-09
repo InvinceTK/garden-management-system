@@ -44,46 +44,45 @@ const GardenPage = () => {
       <Navbar />
       
       <div className="relative">
-      {/* Background Image */}
-  <Image
-    src="/g.jpg"
-    alt="Garden background"
-    fill
-    priority
-    className="object-cover opacity-40 z-0"  
-    sizes="100vw"  
-    quality={100}  
-  />
-      
-     
-      {/* Content */}
-      <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="py-10 text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
-              Smart Garden Planning Made Simple
-            </h1>
-            <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
-              Design your perfect garden with AI-powered tools and expert guidance
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 animate-slide-up stagger-delay-2">
-              <Button 
-                className="bg-green-600 hover:bg-green-500 text-black font-semibold px-6 py-2 hover-lift animate-pulse-glow"
-                onClick={() => document.getElementById('planner').scrollIntoView({ behavior: 'smooth' })}
-              >
-                Start Planning
-              </Button>
-              <Button 
-                variant="outline" 
-                className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
-              >
-                Watch Tutorial
-              </Button>
+        {/* Background Image */}
+        <Image
+          src="/g.jpg"
+          alt="Garden background"
+          fill
+          priority
+          className="object-cover opacity-40 z-0"  
+          sizes="100vw"  
+          quality={100}  
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="py-10 text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
+                Smart Garden Planning Made Simple
+              </h1>
+              <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
+                Design your perfect garden with AI-powered tools and expert guidance
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 animate-slide-up stagger-delay-2">
+                <Button 
+                  className="bg-green-600 hover:bg-green-500 text-black font-semibold px-6 py-2 hover-lift animate-pulse-glow"
+                  onClick={() => document.getElementById('planner').scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Start Planning
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
+                >
+                  Watch Tutorial
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
    
       <div className="container mx-auto px-4 py-12">
