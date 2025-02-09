@@ -9,7 +9,7 @@ ALGORITHM = 'exhsv'
 def detect_weeds(input_path, output_path):
     # Initialize the detector
     weed_detector = GreenOnBrown()
-    
+     
     # Read the image
     frame = cv2.imread(input_path)
     if frame is None:
