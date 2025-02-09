@@ -1,5 +1,5 @@
 'use client';
-
+import GeminiChatbot from './_components/chatbot';
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
@@ -230,7 +230,7 @@ const GardenPage = () => {
         {/* Garden Planner with Scroll Animation */}
         <div id="planner" ref={plannerRef} className="scroll-mt-16 section-fade-in">
           <div className="flex justify-center mb-12">
-            <div className="w-full max-w-[800px] bg-zinc-900 p-6 rounded-lg border border-green-500/20 hover-scale">
+            <div className="w-full max-w-7xl bg-zinc-900 p-6 rounded-lg border border-green-500/20 hover-scale">
               <GardenPlanner />
             </div>
           </div>
@@ -238,18 +238,27 @@ const GardenPage = () => {
 
         {/* AI Tools Section with Scroll Animation */}
 <ImageUpload />
-</div>
 
-        {/* 3D Scene Section */}
-        <div ref={sceneRef} className="mb-12 section-fade-in">
-          <Card className="bg-zinc-900 border-green-500/20">
+        {/* 3D Garden Visualization */}
+        <div className="mt-16 mb-12">
+          <Card className="w-full bg-zinc-900 border-green-500/20">
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">3D Garden Preview</h2>
-              <BasicScene />
+              <h2 className="text-2xl font-bold text-green-400 mb-6">Interactive 3D Garden Preview</h2>
+              <div className="w-full h-[800px] bg-zinc-900 rounded-lg overflow-hidden">
+                <BasicScene />
+              </div>
             </CardContent>
           </Card>
         </div>
-</div>
+        <div className="container mx-auto p-4">
+      <GeminiChatbot
+        assistantName="Support Bot"
+        initialPrompt="You are a plant management system guide and give the answers in properly spaced format."
+        placeholder="How can I help you today?"
+      />
+    </div>
+      </div>
+    </div>
 );
 };
 export default GardenPage;
