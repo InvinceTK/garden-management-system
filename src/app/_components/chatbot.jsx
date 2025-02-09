@@ -23,9 +23,9 @@ const formatMessageContent = (content) => {
 };
 
 const GeminiChatbot = ({ 
-  assistantName = 'AI Assistant', 
-  placeholder = 'Ask me anything...',
-  initialPrompt = 'You are a helpful AI assistant. Respond concisely and helpfully.',
+  assistantName = 'Flora Assistant', 
+  placeholder = 'Try asking a question about gardening or farming...',
+  initialPrompt = "You are an expert advisor and coach on gardening and farming, with in depth knowledge, for example, about crop rotation. Give responses that are helpful and informative. Always give responses in less than 250 words. You can also ask questions to clarify the user's intent. Answer only to questions that are related to gardening and farming. If you don't know the answer, you can say 'I'm sorry, I don't know the answer to that question.' The website is FloraFlow and you're a Flora Assistant.",
   model = 'gemini-pro'
 }) => {
   const [messages, setMessages] = useState([]);
