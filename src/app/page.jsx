@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,6 +8,18 @@ import { Leaf, ShieldCheck, Sprout } from 'lucide-react';
 import GardenPlanner from './GardenPlanner';
 import Navbar from './_components/navbar';
 import './animations.css';
+import ImageUpload from './_components/imageUpload';
+import dynamic from 'next/dynamic';
+
+// Dynamic import of BasicScene
+const BasicScene = dynamic(() => import('./_components/BasicScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] bg-zinc-900 rounded-lg flex items-center justify-center text-white">
+      Loading 3D Scene...
+    </div>
+  ),
+});
 
 const GardenPage = () => {
   // Intersection Observer for scroll animations
@@ -28,10 +41,11 @@ const GardenPage = () => {
   const guideRef = useRef(null);
   const plannerRef = useRef(null);
   const toolsRef = useRef(null);
+  const sceneRef = useRef(null);
 
   useEffect(() => {
     // Initialize scroll animations
-    const elements = [featuresRef, guideRef, plannerRef, toolsRef];
+    const elements = [featuresRef, guideRef, plannerRef, toolsRef, sceneRef];
     elements.forEach(ref => {
       if (ref.current) {
         observeElement(ref.current);
@@ -54,7 +68,7 @@ const GardenPage = () => {
           sizes="100vw"  
           quality={100}  
         />
-        
+      
         {/* Content */}
         <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
           <div className="container mx-auto px-4">
@@ -84,7 +98,6 @@ const GardenPage = () => {
         </div>
       </div>
 
-   
       <div className="container mx-auto px-4 py-12">
         {/* Feature Cards with Scroll Animation */}
         <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 section-fade-in">
@@ -120,9 +133,11 @@ const GardenPage = () => {
             </Card>
           ))}
         </div>
-         {/* Right side - Content */}
+
+
+        {/* Right side - Content */}
           
-         <div className="bg-black min-h-screen flex items-center">
+        <div className="bg-black min-h-screen flex items-center">
   <div className="container mx-auto px-4">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       {/* Left side - Content */}
@@ -222,34 +237,18 @@ const GardenPage = () => {
         </div>
 
         {/* AI Tools Section with Scroll Animation */}
-<div ref={toolsRef} className="grid grid-cols-1 gap-6 section-fade-in">
-  <a href="/weed-detection" className="block">
-    <Card className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all h-full hover-scale">
-      <CardContent className="p-6">
-        <div className="aspect-video bg-zinc-800 rounded-lg overflow-hidden mb-4">
-          <img 
-            src="/api/placeholder/800/400"
-            alt="Weed Detection"
-            className="w-full h-full object-cover opacity-80 transition-opacity hover:opacity-100"
-          />
+<ImageUpload />
+</div>
+
+        {/* 3D Scene Section */}
+        <div ref={sceneRef} className="mb-12 section-fade-in">
+          <Card className="bg-zinc-900 border-green-500/20">
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">3D Garden Preview</h2>
+              <BasicScene />
+            </CardContent>
+          </Card>
         </div>
-        <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center">
-          <ShieldCheck className="w-5 h-5 mr-2" />
-          Weed Detection
-        </h3>
-        <p className="text-zinc-400">
-          Keep your garden healthy by identifying and managing unwanted weeds with our AI-powered detection system
-        </p>
-        <Button 
-          className="mt-4 bg-green-600 hover:bg-green-500 text-black font-semibold hover-lift animate-pulse-glow"
-        >
-          Try Weed Detection
-        </Button>
-      </CardContent>
-    </Card>
-  </a>
-</div>
-</div>
 </div>
 );
 };
