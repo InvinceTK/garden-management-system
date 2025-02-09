@@ -1,5 +1,8 @@
 "use client";
 import React, { useState, useRef } from 'react';
+import dynamic from 'next/dynamic';
+
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -216,7 +219,7 @@ const GardenPlanner = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800" >
+    <Card className="w-full max-w-7xl bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800" >
       <CardHeader className="border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -310,6 +313,8 @@ const GardenPlanner = () => {
               ))
             ))}
           </div>
+
+        
 
           {message && (
             <Alert className={`mt-4 border ${
