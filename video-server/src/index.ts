@@ -109,101 +109,101 @@ app.post('/meetings/:meetingId/participants', (async (req, res) => {
 }) as RequestHandler)
 
 // Weed detection endpoint
-app.post('/weed-detection', (async (req, res) => {
-  try {
-    const { image } = req.body as WeedDetectionRequest
-    if (!image) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'No image provided' 
-      })
-    }
+// app.post('/weed-detection', (async (req, res) => {
+//   try {
+//     const { image } = req.body as WeedDetectionRequest
+//     if (!image) {
+//       return res.status(400).json({ 
+//         success: false, 
+//         error: 'No image provided' 
+//       })
+//     }
 
-    // --- Decode Base64 in Express and save as a PNG file ---
-    let base64Data = image;
-    // Remove any data header if present, e.g. "data:image/png;base64,"
-    if (base64Data.startsWith("data:image")) {
-      base64Data = base64Data.split(",")[1];
-    }
-    // Convert base64 string to a binary buffer
-    const imageBuffer = Buffer.from(base64Data, 'base64');
+//     // --- Decode Base64 in Express and save as a PNG file ---
+//     let base64Data = image;
+//     // Remove any data header if present, e.g. "data:image/png;base64,"
+//     if (base64Data.startsWith("data:image")) {
+//       base64Data = base64Data.split(",")[1];
+//     }
+//     // Convert base64 string to a binary buffer
+//     const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    // Write the decoded image to a temporary PNG file.
-    const inputFileName = `${uuidv4()}_input.png`
-    const inputFilePath = path.join(os.tmpdir(), inputFileName)
-    fs.writeFileSync(inputFilePath, imageBuffer)
-    console.log('Image written to:', inputFilePath)
-    // --------------------------------------------------------
+//     // Write the decoded image to a temporary PNG file.
+//     const inputFileName = `${uuidv4()}_input.png`
+//     const inputFilePath = path.join(os.tmpdir(), inputFileName)
+//     fs.writeFileSync(inputFilePath, imageBuffer)
+//     console.log('Image written to:', inputFilePath)
+//     // --------------------------------------------------------
 
-    // Define a temporary file for the output processed image.
-    const outputFileName = `${uuidv4()}_processed.png`
-    const outputFilePath = path.join(os.tmpdir(), outputFileName)
+//     // Define a temporary file for the output processed image.
+//     const outputFileName = `${uuidv4()}_processed.png`
+//     const outputFilePath = path.join(os.tmpdir(), outputFileName)
 
-    // Use the virtual environment's Python3 executable.
-    // Update this path to the correct location of your venv's python3.
-    const pythonInterpreter = path.join(process.cwd(), 'src', 'venv', 'bin', 'python3');
-    const pythonProcess = spawn(pythonInterpreter, [
-      path.join(process.cwd(), 'detect_weeds.py'),
-      inputFilePath,
-      outputFilePath
-    ]);
+//     // Use the virtual environment's Python3 executable.
+//     // Update this path to the correct location of your venv's python3.
+//     const pythonInterpreter = path.join(process.cwd(), 'src', 'venv', 'bin', 'python3');
+//     const pythonProcess = spawn(pythonInterpreter, [
+//       path.join(process.cwd(), 'detect_weeds.py'),
+//       inputFilePath,
+//       outputFilePath
+//     ]);
 
-    let stdoutData = ''
-    let stderrData = ''
+//     let stdoutData = ''
+//     let stderrData = ''
     
-    pythonProcess.stdout.on('data', (data) => {
-      stdoutData += data.toString()
-    })
+//     pythonProcess.stdout.on('data', (data) => {
+//       stdoutData += data.toString()
+//     })
     
-    pythonProcess.stderr.on('data', (data) => {
-      stderrData += data.toString()
-    })
+//     pythonProcess.stderr.on('data', (data) => {
+//       stderrData += data.toString()
+//     })
     
-    pythonProcess.on('close', (code) => {
-      // Clean up the temporary input file.
-      fs.unlinkSync(inputFilePath)
+//     pythonProcess.on('close', (code) => {
+//       // Clean up the temporary input file.
+//       fs.unlinkSync(inputFilePath)
       
-      if (code !== 0) {
-        return res.status(500).json({ 
-          success: false, 
-          error: `Python process exited with code ${code}: ${stderrData}` 
-        })
-      }
+//       if (code !== 0) {
+//         return res.status(500).json({ 
+//           success: false, 
+//           error: `Python process exited with code ${code}: ${stderrData}` 
+//         })
+//       }
       
-      // Read the processed image file and convert it to a base64 string.
-      let processedImageBase64 = ''
-      try {
-        const processedImageBuffer = fs.readFileSync(outputFilePath)
-        processedImageBase64 = processedImageBuffer.toString('base64')
-      } catch (readError) {
-        return res.status(500).json({
-          success: false,
-          error: 'Processed image file not found or could not be read.'
-        })
-      } finally {
-        // Clean up the output file.
-        fs.unlinkSync(outputFilePath)
-      }
+//       // Read the processed image file and convert it to a base64 string.
+//       let processedImageBase64 = ''
+//       try {
+//         const processedImageBuffer = fs.readFileSync(outputFilePath)
+//         processedImageBase64 = processedImageBuffer.toString('base64')
+//       } catch (readError) {
+//         return res.status(500).json({
+//           success: false,
+//           error: 'Processed image file not found or could not be read.'
+//         })
+//       } finally {
+//         // Clean up the output file.
+//         fs.unlinkSync(outputFilePath)
+//       }
       
-      let detectionResults: WeedDetectionResponse = { success: true }
-      try {
-        detectionResults = JSON.parse(stdoutData) as WeedDetectionResponse
-      } catch (parseError) {
-        console.error('Error parsing Python output:', parseError)
-      }
+//       let detectionResults: WeedDetectionResponse = { success: true }
+//       try {
+//         detectionResults = JSON.parse(stdoutData) as WeedDetectionResponse
+//       } catch (parseError) {
+//         console.error('Error parsing Python output:', parseError)
+//       }
       
-      detectionResults.processed_image = processedImageBase64
-      return res.status(200).json(detectionResults)
-    })
+//       detectionResults.processed_image = processedImageBase64
+//       return res.status(200).json(detectionResults)
+//     })
     
-  } catch (error) {
-    console.error('Error in weed detection:', error)
-    return res.status(500).json({ 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
-  }
-}) as RequestHandler)
+//   } catch (error) {
+//     console.error('Error in weed detection:', error)
+//     return res.status(500).json({ 
+//       success: false, 
+//       error: error instanceof Error ? error.message : 'Unknown error'
+//     })
+//   }
+// }) as RequestHandler)
 
 // Start server
 app.listen(port, host, () => {
