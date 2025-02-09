@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GeminiChatbot from './chatbot';
+import useVoiceTrigger from '@/hooks/voiceHook';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useVoiceTrigger(["hey floraflow", "hey flora flow", "hey flaura flow"], () => setIsOpen(true));
 
   if (!isOpen) {
     return (
