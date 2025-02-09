@@ -1,5 +1,5 @@
 'use client';
-
+import GeminiChatbot from './_components/chatbot';
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
@@ -250,7 +250,13 @@ const GardenPage = () => {
             </CardContent>
           </Card>
         </div>
-
+        <div className="container mx-auto p-4">
+      <GeminiChatbot
+        assistantName="Support Bot"
+        initialPrompt="You are a plant management system guide and give the answers in properly spaced format."
+        placeholder="How can I help you today?"
+      />
+    </div>
       </div>
     </div>
 );

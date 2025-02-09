@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, Maximize2 } from 'lucide-react';
 
-function BasicScene() {
+function InteractiveGarden() {
   const mountRef = useRef(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [showTutorial, setShowTutorial] = useState(true);
@@ -310,7 +310,7 @@ function BasicScene() {
   };
 
   return (
-    <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'w-full h-[800px]'}`}>
+    <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'w-full h-[600px]'}`}>
       <div ref={mountRef} className="w-full h-full" />
       
       <button
@@ -357,4 +357,4 @@ function BasicScene() {
   );
 }
 
-export default BasicScene;
+export default InteractiveGarden;
