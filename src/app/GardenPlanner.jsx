@@ -48,7 +48,9 @@ const PlantDetails = ({
       onClick={onClick}
       className={`w-full h-full flex items-center justify-center cursor-pointer 
         overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-200 relative
-        ${groupColor ? `ring-2 ring-offset-1 ${groupColor.split(" ")[0]}` : ""}`}
+        ${
+          groupColor ? `ring-2 ring-offset-1 ${groupColor.split(" ")[0]}` : ""
+        }`}
     >
       {groupNumber && (
         <div
@@ -119,7 +121,9 @@ const PlantDetails = ({
 
 const GardenPlanner = () => {
   const [grid, setGrid] = useState(
-    Array(8).fill(null).map(() => Array(8).fill(null))
+    Array(8)
+      .fill(null)
+      .map(() => Array(8).fill(null))
   );
   const [draggedPlant, setDraggedPlant] = useState(null);
   const [message, setMessage] = useState(null);
@@ -132,9 +136,12 @@ const GardenPlanner = () => {
     const newGrid = [...grid];
     newGrid[row][col] = null;
     setGrid(newGrid);
-    setGroups(groups.filter(group => 
-      !group.cells.some(cell => cell.row === row && cell.col === col)
-    ));
+    setGroups(
+      groups.filter(
+        (group) =>
+          !group.cells.some((cell) => cell.row === row && cell.col === col)
+      )
+    );
     setMessage({ type: "info", text: "Plant removed from garden" });
   };
 
@@ -146,12 +153,16 @@ const GardenPlanner = () => {
     setDraggedPlant(null);
     setMessage({
       type: "success",
-      text: `${plantData[draggedPlant].name} planted successfully!`
+      text: `${plantData[draggedPlant].name} planted successfully!`,
     });
   };
 
   const clearGrid = () => {
-    setGrid(Array(8).fill(null).map(() => Array(8).fill(null)));
+    setGrid(
+      Array(8)
+        .fill(null)
+        .map(() => Array(8).fill(null))
+    );
     setGroups([]);
     setSelectedPlantsForGroup([]);
     setMessage({ type: "info", text: "Garden cleared successfully!" });
@@ -205,148 +216,156 @@ const GardenPlanner = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800" >
-      <CardHeader className="border-b border-gray-700">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Leaf className="w-6 h-6 text-green-400" />
-            <CardTitle className="text-gray-100 text-2xl">
-              Garden Planner
-            </CardTitle>
+    <div className="w-full flex justify-center">
+      <Card className="w-full max-w-4xl bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800">
+        <CardHeader className="border-b border-gray-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Leaf className="w-6 h-6 text-green-400" />
+              <CardTitle className="text-gray-100 text-2xl">
+                Garden Planner
+              </CardTitle>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant={isGrouping ? "default" : "outline"}
+                className="gap-2"
+                onClick={() => {
+                  if (isGrouping) {
+                    createGroup();
+                  } else {
+                    setIsGrouping(true);
+                    setSelectedPlantsForGroup([]);
+                  }
+                }}
+              >
+                <Group size={16} />
+                {isGrouping ? "Confirm Group" : "Create Group"}
+              </Button>
+              <Button variant="outline" className="gap-2" onClick={clearGrid}>
+                <Trash2 size={16} />
+                Clear Garden
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <Button
-              variant={isGrouping ? "default" : "outline"}
-              className="gap-2"
-              onClick={() => {
-                if (isGrouping) {
-                  createGroup();
-                } else {
-                  setIsGrouping(true);
-                  setSelectedPlantsForGroup([]);
-                }
-              }}
-            >
-              <Group size={16} />
-              {isGrouping ? "Confirm Group" : "Create Group"}
-            </Button>
-            <Button variant="outline" className="gap-2" onClick={clearGrid}>
-              <Trash2 size={16} />
-              Clear Garden
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
+        </CardHeader>
 
-      <div className="w-full flex items-center justify-center bg-gray-900">
-        <CardContent className="p-8">
-          <div className="mb-6">
-            <h3 className="text-gray-300 text-sm font-medium mb-3">
-              Available Plants
-            </h3>
-            <div className="flex gap-3 p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700">
-              {Object.entries(plantData).map(([key, plant]) => (
-                <div
-                  key={key}
-                  draggable
-                  onDragStart={() => !isGrouping && setDraggedPlant(key)}
-                  className="px-4 py-2 w-1/3 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg 
+        <div className="w-full flex items-center justify-center bg-gray-900">
+          <CardContent className="p-8">
+            <div className="mb-6">
+              <h3 className="text-gray-300 text-sm font-medium mb-3">
+                Available Plants
+              </h3>
+              <div className="flex gap-3 p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700">
+                {Object.entries(plantData).map(([key, plant]) => (
+                  <div
+                    key={key}
+                    draggable
+                    onDragStart={() => !isGrouping && setDraggedPlant(key)}
+                    className="px-4 py-2 w-1/3 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg 
                     cursor-move hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200
                     shadow-md shadow-green-500/20"
-                >
-                  {plant.name}
-                </div>
-              ))}
+                  >
+                    {plant.name}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center justify-center">
-            <div
-              className="inline-grid grid-cols-8 gap-2 p-4 rounded-xl shadow-inner bg-opacity-90"
-              style={soilStyle}
-            >
-              {grid.map((row, rowIndex) =>
-                row.map((cell, colIndex) => {
-                  const group = getCellGroup(rowIndex, colIndex);
-                  const isSelected = selectedPlantsForGroup.includes(
-                    `${rowIndex},${colIndex}`
-                  );
-                  return (
-                    <div
-                      key={`${rowIndex}-${colIndex}`}
-                      className={`w-12 h-12 flex items-center justify-center relative transition-all duration-200
-                        ${cell ? "bg-opacity-50" : "hover:bg-opacity-30 bg-opacity-10"} 
+            <div className="flex items-center justify-center">
+              <div
+                className="inline-grid grid-cols-8 gap-2 p-4 rounded-xl shadow-inner bg-opacity-90"
+                style={soilStyle}
+              >
+                {grid.map((row, rowIndex) =>
+                  row.map((cell, colIndex) => {
+                    const group = getCellGroup(rowIndex, colIndex);
+                    const isSelected = selectedPlantsForGroup.includes(
+                      `${rowIndex},${colIndex}`
+                    );
+                    return (
+                      <div
+                        key={`${rowIndex}-${colIndex}`}
+                        className={`w-12 h-12 flex items-center justify-center relative transition-all duration-200
+                        ${
+                          cell
+                            ? "bg-opacity-50"
+                            : "hover:bg-opacity-30 bg-opacity-10"
+                        } 
                         bg-white rounded-lg
-                        ${isGrouping && cell ? "hover:ring-2 hover:ring-blue-500" : ""}
-                        ${isSelected ? "ring-2 ring-blue-500" : ""}`}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        if (!isGrouping) {
-                          handleDrop(rowIndex, colIndex);
+                        ${
+                          isGrouping && cell
+                            ? "hover:ring-2 hover:ring-blue-500"
+                            : ""
                         }
-                      }}
-                      onDragOver={(e) => e.preventDefault()}
-                    >
-                      {cell && (
-                        <>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              clearTile(rowIndex, colIndex);
-                            }}
-                            className="absolute -top-1 -right-1 p-1 bg-red-500 hover:bg-red-600 
+                        ${isSelected ? "ring-2 ring-blue-500" : ""}`}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          if (!isGrouping) {
+                            handleDrop(rowIndex, colIndex);
+                          }
+                        }}
+                        onDragOver={(e) => e.preventDefault()}
+                      >
+                        {cell && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                clearTile(rowIndex, colIndex);
+                              }}
+                              className="absolute -top-1 -right-1 p-1 bg-red-500 hover:bg-red-600 
                               text-white rounded-full shadow-lg z-10 transition-all duration-200"
-                          >
-                            <X size={12} />
-                          </button>
-                          <PlantDetails
-                            plant={plantData[cell]}
-                            row={rowIndex}
-                            col={colIndex}
-                            groupNumber={group?.id}
-                            groupColor={group?.color}
-                            onClick={() => {
-                              if (isGrouping) {
-                                togglePlantSelection(rowIndex, colIndex);
-                              }
-                            }}
-                            isGrouping={isGrouping}
-                          />
-                        </>
-                      )}
-                    </div>
-                  );
-                })
-              )}
+                            >
+                              <X size={12} />
+                            </button>
+                            <PlantDetails
+                              plant={plantData[cell]}
+                              row={rowIndex}
+                              col={colIndex}
+                              groupNumber={group?.id}
+                              groupColor={group?.color}
+                              onClick={() => {
+                                if (isGrouping) {
+                                  togglePlantSelection(rowIndex, colIndex);
+                                }
+                              }}
+                              isGrouping={isGrouping}
+                            />
+                          </>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             </div>
-          </div>
 
-        
+            {message && (
+              <Alert
+                className={`mt-4 border ${
+                  message.type === "error"
+                    ? "bg-red-500/10 border-red-500 text-red-500"
+                    : message.type === "success"
+                    ? "bg-green-500/10 border-green-500 text-green-500"
+                    : "bg-blue-500/10 border-blue-500 text-blue-500"
+                }`}
+              >
+                <AlertDescription>{message.text}</AlertDescription>
+              </Alert>
+            )}
 
-          {message && (
-            <Alert
-              className={`mt-4 border ${
-                message.type === "error"
-                  ? "bg-red-500/10 border-red-500 text-red-500"
-                  : message.type === "success"
-                  ? "bg-green-500/10 border-green-500 text-green-500"
-                  : "bg-blue-500/10 border-blue-500 text-blue-500"
-              }`}
-            >
-              <AlertDescription>{message.text}</AlertDescription>
-            </Alert>
-          )}
-
-          {isGrouping && (
-            <div className="mt-4 text-sm text-gray-300">
-              {selectedPlantsForGroup.length === 0
-                ? "Click on plants to add them to the group"
-                : `Selected ${selectedPlantsForGroup.length} plants - click "Confirm Group" to create group`}
-            </div>
-          )}
-        </CardContent>
-      </div>
-    </Card>
+            {isGrouping && (
+              <div className="mt-4 text-sm text-gray-300">
+                {selectedPlantsForGroup.length === 0
+                  ? "Click on plants to add them to the group"
+                  : `Selected ${selectedPlantsForGroup.length} plants - click "Confirm Group" to create group`}
+              </div>
+            )}
+          </CardContent>
+        </div>
+      </Card>
+    </div>
   );
 };
 

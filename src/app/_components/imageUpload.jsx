@@ -55,7 +55,7 @@ const WeedDetectionCard = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full  mx-auto">
       <Card className="bg-zinc-900 border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10 transition-all">
         <CardContent className="p-6">
           <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center">

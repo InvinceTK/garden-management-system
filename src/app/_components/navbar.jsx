@@ -15,15 +15,13 @@ const Navbar = () => {
 
   const links = [
     { href: '/', text: 'Home', icon: Leaf },
-    { href: '/plant-journal', text: 'Garden Planner', icon: Leaf },
-    { href: '/plant-disease', text: 'Disease Detection', icon: Camera },
+    { href: '/GardenPlanner', text: 'Garden Planner', icon: Leaf },
     { href: '/weed-detection', text: 'Weed Detection', icon: Camera },
-    { href: '/plant-library', text: 'Plant Library', icon: Leaf },
   ];
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-200 
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-200 border-b-2 border-green-500/30
         ${scrolled 
           ? 'bg-black/80 backdrop-blur-md border-b border-green-500/20' 
           : 'bg-black border-b border-green-500/10'
