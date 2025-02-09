@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +9,17 @@ import GardenPlanner from './GardenPlanner';
 import Navbar from './_components/navbar';
 import './animations.css';
 import ImageUpload from './_components/imageUpload';
+import dynamic from 'next/dynamic';
+
+// Dynamic import of BasicScene
+const BasicScene = dynamic(() => import('./_components/BasicScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] bg-zinc-900 rounded-lg flex items-center justify-center text-white">
+      Loading 3D Scene...
+    </div>
+  ),
+});
 
 const GardenPage = () => {
   // Intersection Observer for scroll animations
@@ -29,10 +41,11 @@ const GardenPage = () => {
   const guideRef = useRef(null);
   const plannerRef = useRef(null);
   const toolsRef = useRef(null);
+  const sceneRef = useRef(null);
 
   useEffect(() => {
     // Initialize scroll animations
-    const elements = [featuresRef, guideRef, plannerRef, toolsRef];
+    const elements = [featuresRef, guideRef, plannerRef, toolsRef, sceneRef];
     elements.forEach(ref => {
       if (ref.current) {
         observeElement(ref.current);
@@ -45,48 +58,46 @@ const GardenPage = () => {
       <Navbar />
       
       <div className="relative">
-      {/* Background Image */}
-  <Image
-    src="/g.jpg"
-    alt="Garden background"
-    fill
-    priority
-    className="object-cover opacity-40 z-0"  
-    sizes="100vw"  
-    quality={100}  
-  />
+        {/* Background Image */}
+        <Image
+          src="/g.jpg"
+          alt="Garden background"
+          fill
+          priority
+          className="object-cover opacity-40 z-0"  
+          sizes="100vw"  
+          quality={100}  
+        />
       
-     
-      {/* Content */}
-      <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="py-10 text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
-              Smart Garden Planning Made Simple
-            </h1>
-            <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
-              Design your perfect garden with AI-powered tools and expert guidance
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 animate-slide-up stagger-delay-2">
-              <Button 
-                className="bg-green-600 hover:bg-green-500 text-black font-semibold px-6 py-2 hover-lift animate-pulse-glow"
-                onClick={() => document.getElementById('planner').scrollIntoView({ behavior: 'smooth' })}
-              >
-                Start Planning
-              </Button>
-              <Button 
-                variant="outline" 
-                className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
-              >
-                Watch Tutorial
-              </Button>
+        {/* Content */}
+        <div className="relative z-10 py-12 md:py-20 border-b border-green-500/20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="py-10 text-4xl md:text-5xl font-bold text-green-400 mb-4 animate-slide-up">
+                Smart Garden Planning Made Simple
+              </h1>
+              <p className="text-lg md:text-xl text-zinc-400 mb-8 animate-slide-up stagger-delay-1">
+                Design your perfect garden with AI-powered tools and expert guidance
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 animate-slide-up stagger-delay-2">
+                <Button 
+                  className="bg-green-600 hover:bg-green-500 text-black font-semibold px-6 py-2 hover-lift animate-pulse-glow"
+                  onClick={() => document.getElementById('planner').scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Start Planning
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-green-500 text-green-400 hover:bg-green-500/10 px-6 py-2 hover-lift"
+                >
+                  Watch Tutorial
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-   
       <div className="container mx-auto px-4 py-12">
         {/* Feature Cards with Scroll Animation */}
         <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 section-fade-in">
@@ -122,9 +133,11 @@ const GardenPage = () => {
             </Card>
           ))}
         </div>
-         {/* Right side - Content */}
+
+
+        {/* Right side - Content */}
           
-         <div className="bg-black min-h-screen flex items-center">
+        <div className="bg-black min-h-screen flex items-center">
   <div className="container mx-auto px-4">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       {/* Left side - Content */}
@@ -226,6 +239,16 @@ const GardenPage = () => {
         {/* AI Tools Section with Scroll Animation */}
 <ImageUpload />
 </div>
+
+        {/* 3D Scene Section */}
+        <div ref={sceneRef} className="mb-12 section-fade-in">
+          <Card className="bg-zinc-900 border-green-500/20">
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">3D Garden Preview</h2>
+              <BasicScene />
+            </CardContent>
+          </Card>
+        </div>
 </div>
 );
 };
